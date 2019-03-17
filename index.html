@@ -27,12 +27,12 @@
             title: ["GitHub",
                     "sourceforge",
                     "wikipedia"],
-            url: [  "https://github.com",
+            url: [  "https://www.wikipedia.org",
                     "https://sourceforge.net",
-                    "https://www.wikipedia.org"],
-            type:[  "this_window", // use iframe
-                    "new_window", // open new tab
-                    "this_window"]
+                    "https://github.com"],
+            type:[  "this_window", // this_window = use iframe
+                    "this_window",
+                    "new_window"] // new_window = open new tab, if website doesn't support iframe, we will use this
         }
         pages['hidden'][0]=false
         for(var n=1;n<pages['title'].length;n++){
