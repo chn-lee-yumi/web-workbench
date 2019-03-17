@@ -1,0 +1,104 @@
+<!DOCTYPE HTML>
+<html style="height: 100%;">
+<head>
+    <meta charset='UTF-8'>
+    <title>Workbench</title>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script type="text/javascript">
+        /**
+         * https://www.cnblogs.com/frost-yen/p/8616429.html
+         * 获取数组中相同元素的个数
+         * @param val 相同的元素
+         * @param arr 传入数组
+         */
+        function getSameNum(val,arr){
+            processArr = arr.filter(function(value) {
+                return value == val;
+            })
+            return processArr.length;
+        }
+
+        var pages={
+            hidden: new Array(),
+            title: ["GitHub",
+                    "sourceforge",
+                    "wikipedia"],
+            url: [  "https://github.com",
+                    "https://sourceforge.net",
+                    "https://www.wikipedia.org"],
+            type:[  "this_window", // use iframe
+                    "new_window", // open new tab
+                    "this_window"]
+        }
+        pages['hidden'][0]=false
+        for(var n=1;n<pages['title'].length;n++){
+            pages['hidden'][n]=true
+        }
+        progress_per_iframe=100/getSameNum("this_window",pages['type'])
+    </script>
+</head>
+<body style="height: 100%; background-color: rgb(25,25,25);">
+    <div class="container-fluid" id="app" style="height: 100%;">
+
+        <!--show when loading-->
+        <div class="jumbotron" style="height: 100%; background-color:rgba(0,0,0,0); color:rgb(200,200,200)" v-bind:hidden="!is_loading">
+          <h1>Welcome to workbench!</h1>
+          <p class="lead">Loading...</p>
+          <div class="progress">
+              <div class="progress-bar progress-bar-striped progress-bar-animated" v-bind:style="'width: '+load_progress+'%'">{{load_progress.toFixed(2)}}%</div>
+          </div>
+        </div>
+
+        <!--show after loaded-->
+        <div class="row" style="height: 100%;" v-bind:hidden="is_loading">
+            <div class="col-2"><!--navbar-->
+                <div class="list-group list-group-flush">
+                    <button type="button" class="list-group-item list-group-item-action list-group-item-dark"><strong>Workbench</strong></button>
+                    <button v-for="n in pages['title'].length" v-on:click="change_page(n-1)" type="button" class="list-group-item list-group-item-action" style="background-color:rgba(0,0,0,0); color:rgb(200,200,200)">{{pages['title'][n-1]}}</button>
+                </div>
+            </div>
+            <div class="col"><!--iframe-->
+                <iframe v-for="n in pages['title'].length" v-on:load="update_progress" v-if="pages['type'][n-1]=='this_window'" v-bind:hidden="pages['hidden'][n-1]" v-bind:src="pages['url'][n-1]" width="100%" height="100%" frameborder="0"></iframe><!-- sandbox="allow-same-origin allow-scripts allow-forms"-->
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var app = new Vue({
+          el: '#app',
+          data: {
+              is_loading: true,
+              load_progress: 0,
+              pages: pages
+          },
+          methods: {
+              update_progress: function () {
+                  this.load_progress+=progress_per_iframe
+                  if(this.load_progress>99){
+                      this.is_loading=false
+                  }
+              },
+              change_page: function (id) {
+                  if(pages['type'][id]=='this_window'){ //use iframe
+                      for(var n=0;n<pages['title'].length;n++){
+                          if(n!=id){
+                              //pages['hidden'][n]=true
+                              Vue.set(pages['hidden'], n, true)
+                          }else{
+                              Vue.set(pages['hidden'], n, false)
+                          }
+                      }
+                  }else{ //some website doesn't support iframe
+                      window.open(pages['url'][id], '_blank');
+                  }
+              }
+          }
+        })
+    </script>
+</body>
+</html>
