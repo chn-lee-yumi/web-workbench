@@ -24,15 +24,15 @@
 
         var pages={
             hidden: new Array(),
-            title: ["GitHub",
-                    "sourceforge",
-                    "wikipedia"],
+            title: ["wikipedia",
+                    "GitHub",
+                    "sourceforge"],
             url: [  "https://www.wikipedia.org",
-                    "https://sourceforge.net",
-                    "https://github.com"],
+                    "https://github.com",
+                    "https://sourceforge.net"],
             type:[  "this_window", // this_window = use iframe
-                    "this_window",
-                    "new_window"] // new_window = open new tab, if website doesn't support iframe, we will use this
+                    "new_window", // new_window = open new tab, if website doesn't support iframe, we will use this
+                    "new_window"]
         }
         pages['hidden'][0]=false
         for(var n=1;n<pages['title'].length;n++){
