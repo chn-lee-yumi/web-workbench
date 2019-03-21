@@ -47,8 +47,8 @@
         progress_per_iframe=100/getSameNum("this_window",pages['type'])
     </script>
 </head>
-<body style="height: 100%; background-color: rgb(25,25,25);">
-    <div class="container-fluid" id="app" style="height: 100%; overflow: hidden;"><!--overflow: hidden; can fix redundant scroll bar-->
+<body style="height: 100%; background-color: rgb(25,25,25); overflow: hidden;"><!--overflow: hidden; can fix redundant scroll bar-->
+    <div class="container-fluid" id="app" style="height: 100%;">
 
         <!--show when loading-->
         <div class="jumbotron" style="height: 100%; background-color:rgba(0,0,0,0); color:rgb(200,200,200)" v-bind:hidden="!is_loading">
